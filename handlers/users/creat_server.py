@@ -57,8 +57,6 @@ async def creat_server(msg: types.Message):
     #time.sleep(0.4)
     #await bot.delete_message(chat_id=msg.from_user.id, message_id=n8.message_id)
     m1 = await msg.answer(f"Серверга ном беринг.\n\n<b>Огохлантириш</b>\nсервер номи 15дан ошиб кетмаслиги керак❗️")
-    message_list.append(msg.from_user.id)
-    f_message_list.append(msg.from_user.id)
     f_message_list.append(msg.message_id)
     message_list.append(m1.message_id)
     await Server.server_name.set()
@@ -159,33 +157,19 @@ async def server_player(msg: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(server_callback.filter(action="creat"))
 async def creat(call: types.CallbackQuery):
-    await bot.delete_message(chat_id=kerakli_royxat[0], message_id=kerakli_royxat[1])
+    await bot.delete_message(chat_id=call.from_user.id, message_id=kerakli_royxat[1])
     await bot.delete_message(chat_id=ADMINS[0], message_id=kerakli_royxat[2])
-    son = 1
-    son1 = 0
     while True:
-        if son!=len(message_list):
-            await bot.delete_message(chat_id=message_list[0], message_id=message_list[son])
-            son += 1
-        else:
-            while True:
-                if son1!=len(message_list):
-                    del message_list[-1]
-                else:
-                    break
+        try:
+            await bot.delete_message(chat_id=call.from_user.id,  message_id=message_list[-1])
+            del message_list[-1]
+        except IndexError:
             break
-    son = 1
-    son1 = 0
     while True:
-        if son!=len(f_message_list):
-            await bot.delete_message(chat_id=f_message_list[0], message_id=f_message_list[son])
-            son += 1
-        else:
-            while True:
-                if son1!=len(f_message_list):
-                    del f_message_list[-1]
-                else:
-                    break
+        try:
+            await bot.delete_message(chat_id=call.from_user.id, message_id=f_message_list[-1])
+            del f_message_list[-1]
+        except IndexError:
             break 
 
     await call.answer("Сервер яратишга рухсат бердингиз", show_alert=True)
@@ -247,24 +231,18 @@ async def creat(call: types.CallbackQuery):
 async def cancel(call: types.CallbackQuery):
     await bot.delete_message(chat_id=kerakli_royxat[0], message_id=kerakli_royxat[1])
     await bot.delete_message(chat_id=ADMINS[0], message_id=kerakli_royxat[2])
-
-    son = 1
-    son1 = 0
     while True:
-        if son!=len(message_list):
-            await bot.delete_message(chat_id=message_list[0], message_id=message_list[son])
-            son += 1
-        else:
-            while True:
-                if son1!=len(message_list):
-                    del message_list[-1]
-                else:
-                    break
+        try:
+            await bot.delete_message(chat_id=call.from_user.id,  message_id=message_list[-1])
+            del message_list[-1]
+        except IndexError:
             break
-
+    while True:
+        try:
+            await bot.delete_message(chat_id=call.from_user.id, message_id=f_message_list[-1])
+            del f_message_list[-1]
+        except IndexError:
+            break
     await call.answer("Сервер рад килинди", show_alert=True)
     await bot.send_message(chat_id=kerakli_royxat[0], text=f"Сизнинг серверингиз кабул килинмади❌")
 
-    del kerakli_royxat[-1]
-    del kerakli_royxat[-1]
-    del kerakli_royxat[-1]
