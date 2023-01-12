@@ -16,6 +16,8 @@ f_message_list = []
 @dp.message_handler(commands="creat_server")
 async def creat_server(msg: types.Message):
     m1 = await msg.answer(f"Серверга ном беринг.\n\n<b>Огохлантириш</b>\nсервер номи 15дан ошиб кетмаслиги керак❗️")
+    message_list.append(msg.from_user.id)
+    f_message_list.append(msg.from_user.id)
     f_message_list.append(msg.message_id)
     message_list.append(m1.message_id)
     await Server.server_name.set()
@@ -112,22 +114,29 @@ async def server_player(msg: types.Message, state: FSMContext):
             kerakli_royxat.append(day)
             kerakli_royxat.append(date_creat_server)
             kerakli_royxat.append(text)
+            print(message_list)
+            print(kerakli_royxat)
+            print(len(kerakli_royxat))
             await state.finish()
 
 @dp.callback_query_handler(server_callback.filter(action="creat"))
 async def creat(call: Union[types.CallbackQuery, types.Message]):
     message = call.from_user.id
-    await bot.delete_message(chat_id=message, message_id=kerakli_royxat[1])
-    await bot.delete_message(chat_id=message, message_id=kerakli_royxat[2])
+    user_id = message_list[0]
+    del message_list[0]
+    await bot.delete_message(chat_id=user_id, message_id=kerakli_royxat[1])
+    await bot.delete_message(chat_id=user_id, message_id=kerakli_royxat[2])
     while True:
         try:
-            await bot.delete_message(chat_id=message,  message_id=message_list[-1])
+            await bot.delete_message(chat_id=user_id,  message_id=message_list[-1])
             del message_list[-1]
         except IndexError:
             break
+    user_id = f_message_list[0]
+    del f_message_list[0]
     while True:
         try:
-            await bot.delete_message(chat_id=message, message_id=f_message_list[-1])
+            await bot.delete_message(chat_id=user_id, message_id=f_message_list[-1])
             del f_message_list[-1]
         except IndexError:
             break 
@@ -232,21 +241,21 @@ async def creat(call: Union[types.CallbackQuery, types.Message]):
     del kerakli_royxat[-1]
 
 @dp.callback_query_handler(server_callback.filter(action="cancel"))
-async def cancel(call: types.CallbackQuery):
+async def cancel(call: Union[types.CallbackQuery, types.Message]):
     await bot.delete_message(chat_id=kerakli_royxat[0], message_id=kerakli_royxat[1])
     await bot.delete_message(chat_id=ADMINS[0], message_id=kerakli_royxat[2])
-    while True:
-        try:
-            await bot.delete_message(chat_id=call.from_user.id,  message_id=message_list[-1])
-            del message_list[-1]
-        except IndexError:
-            break
-    while True:
-        try:
-            await bot.delete_message(chat_id=call.from_user.id, message_id=f_message_list[-1])
-            del f_message_list[-1]
-        except IndexError:
-            break
+    #while True:
+        #try:
+            #await bot.delete_message(chat_id=call.from_user.id,  message_id=message_list[-1])
+            #del message_list[-1]
+        #except IndexError:
+            #break
+    #while True:
+        #try:
+            #await bot.delete_message(chat_id=call.from_user.id, message_id=f_message_list[-1])
+            #del f_message_list[-1]
+        #except IndexError:
+            #break
     await call.answer("Сервер рад килинди", show_alert=True)
     await bot.send_message(chat_id=kerakli_royxat[0], text=f"Сизнинг серверингиз кабул килинмади❌")
     del kerakli_royxat[-1]
