@@ -1,5 +1,5 @@
 from aiogram import types
-
+from typing import Union
 from loader import dp, bot
 from aiogram.dispatcher import FSMContext
 from states.server import Server
@@ -15,47 +15,6 @@ f_message_list = []
 
 @dp.message_handler(commands="creat_server")
 async def creat_server(msg: types.Message):
-    text0 = f"сервер яратиш жарайони<b>🔎 • • • • •</b>"
-    text1 = f"сервер яратиш жарайони<b>• 🔎 • • • •</b>"
-    text2 = f"сервер яратиш жарайони<b>• • 🔎 • • • </b>"
-    text3 = f"сервер яратиш жарайони<b>• • • 🔎 • •</b>"
-    text4 = f"сервер яратиш жарайони<b>• • • • 🔎 •</b>"
-    text5 = f"сервер яратиш жарайони<b>• • • • • 🔎</b>"
-    #n = await bot.send_message(chat_id=msg.from_user.id, text=text0)
-    #time.sleep(0.4)
-    #n1 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text1, message_id=n.message_id)
-    #time.sleep(0.4)
-    #n2 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text2, message_id=n1.message_id)
-    #time.sleep(0.4)
-    #n3 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text3, message_id=n2.message_id)
-    #time.sleep(0.4)
-    #n4 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text4, message_id=n3.message_id)
-    #time.sleep(0.4)
-    #n5 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text5, message_id=n4.message_id)
-    #time.sleep(0.4)
-    #n6 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text0, message_id=n5.message_id)
-    #time.sleep(0.4)
-    #n7 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text1, message_id=n6.message_id)
-    #time.sleep(0.4)
-    #n8 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text2, message_id=n7.message_id)
-    #time.sleep(0.4)
-    #n1 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text3, message_id=n8.message_id)
-    #time.sleep(0.4)
-    #n2 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text4, message_id=n1.message_id)
-    #time.sleep(0.4)
-    #n3 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text5, message_id=n2.message_id)
-    #time.sleep(0.4)
-    #n4 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text0, message_id=n3.message_id)
-    #time.sleep(0.4)
-    #n5 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text1, message_id=n4.message_id)
-    #time.sleep(0.4)
-    #n6 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text2, message_id=n5.message_id)
-    #time.sleep(0.4)
-    #n7 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text3, message_id=n6.message_id)
-    #time.sleep(0.4)
-    #n8 = await bot.edit_message_text(chat_id=msg.from_user.id, text=text4, message_id=n7.message_id)
-    #time.sleep(0.4)
-    #await bot.delete_message(chat_id=msg.from_user.id, message_id=n8.message_id)
     m1 = await msg.answer(f"Серверга ном беринг.\n\n<b>Огохлантириш</b>\nсервер номи 15дан ошиб кетмаслиги керак❗️")
     f_message_list.append(msg.message_id)
     message_list.append(m1.message_id)
@@ -156,22 +115,67 @@ async def server_player(msg: types.Message, state: FSMContext):
             await state.finish()
 
 @dp.callback_query_handler(server_callback.filter(action="creat"))
-async def creat(call: types.CallbackQuery):
-    await bot.delete_message(chat_id=call.from_user.id, message_id=kerakli_royxat[1])
-    await bot.delete_message(chat_id=ADMINS[0], message_id=kerakli_royxat[2])
+async def creat(call: Union[types.CallbackQuery, types.Message]):
+    message = call.from_user.id
+    await bot.delete_message(chat_id=message, message_id=kerakli_royxat[1])
+    await bot.delete_message(chat_id=message, message_id=kerakli_royxat[2])
     while True:
         try:
-            await bot.delete_message(chat_id=call.from_user.id,  message_id=message_list[-1])
+            await bot.delete_message(chat_id=message,  message_id=message_list[-1])
             del message_list[-1]
         except IndexError:
             break
     while True:
         try:
-            await bot.delete_message(chat_id=call.from_user.id, message_id=f_message_list[-1])
+            await bot.delete_message(chat_id=message, message_id=f_message_list[-1])
             del f_message_list[-1]
         except IndexError:
             break 
 
+          
+    text0 = f"сервер яратиш жарайони<b>🔎 • • • • •</b>"
+    text1 = f"сервер яратиш жарайони<b>• 🔎 • • • •</b>"
+    text2 = f"сервер яратиш жарайони<b>• • 🔎 • • • </b>"
+    text3 = f"сервер яратиш жарайони<b>• • • 🔎 • •</b>"
+    text4 = f"сервер яратиш жарайони<b>• • • • 🔎 •</b>"
+    text5 = f"сервер яратиш жарайони<b>• • • • • 🔎</b>"
+    n = await bot.send_message(chat_id=kerakli_royxat[0], text=text0)
+    time.sleep(0.4)
+    n1 = await bot.edit_message_text(chat_id=message, text=text1, message_id=n.message_id)
+    time.sleep(0.4)
+    n2 = await bot.edit_message_text(chat_id=message, text=text2, message_id=n1.message_id)
+    time.sleep(0.4)
+    n3 = await bot.edit_message_text(chat_id=message, text=text3, message_id=n2.message_id)
+    time.sleep(0.4)
+    n4 = await bot.edit_message_text(chat_id=message, text=text4, message_id=n3.message_id)
+    time.sleep(0.4)
+    n5 = await bot.edit_message_text(chat_id=message, text=text5, message_id=n4.message_id)
+    time.sleep(0.4)
+    n6 = await bot.edit_message_text(chat_id=message, text=text0, message_id=n5.message_id)
+    time.sleep(0.4)
+    n7 = await bot.edit_message_text(chat_id=message, text=text1, message_id=n6.message_id)
+    time.sleep(0.4)
+    n8 = await bot.edit_message_text(chat_id=message, text=text2, message_id=n7.message_id)
+    time.sleep(0.4)
+    n1 = await bot.edit_message_text(chat_id=message, text=text3, message_id=n8.message_id)
+    time.sleep(0.4)
+    n2 = await bot.edit_message_text(chat_id=message, text=text4, message_id=n1.message_id)
+    time.sleep(0.4)
+    n3 = await bot.edit_message_text(chat_id=message, text=text5, message_id=n2.message_id)
+    time.sleep(0.4)
+    n4 = await bot.edit_message_text(chat_id=message, text=text0, message_id=n3.message_id)
+    time.sleep(0.4)
+    n5 = await bot.edit_message_text(chat_id=message, text=text1, message_id=n4.message_id)
+    time.sleep(0.4)
+    n6 = await bot.edit_message_text(chat_id=message, text=text2, message_id=n5.message_id)
+    time.sleep(0.4)
+    n7 = await bot.edit_message_text(chat_id=message, text=text3, message_id=n6.message_id)
+    time.sleep(0.4)
+    n8 = await bot.edit_message_text(chat_id=message, text=text4, message_id=n7.message_id)
+    time.sleep(0.4)
+    await bot.delete_message(chat_id=message, message_id=n8.message_id)
+      
+    
     await call.answer("Сервер яратишга рухсат бердингиз", show_alert=True)
     text1 = f"Сизнинг серверингиз кабул килинди✅\nСервер муддати: {int(kerakli_royxat[3])+2}{kerakli_royxat[4]}\
         \n                          5"
@@ -186,17 +190,17 @@ async def creat(call: types.CallbackQuery):
     text6 = f"Сизнинг серверингиз кабул килинди✅\nСервер муддати: {int(kerakli_royxat[3])+2}{kerakli_royxat[4]}\
         \n                          0"
     msg1 = await bot.send_message(chat_id=kerakli_royxat[0], text=text1)
-    #time.sleep(1)
-    msg2 = await bot.edit_message_text(chat_id=kerakli_royxat[0], text=text2, message_id=msg1.message_id)
-    #time.sleep(1)
-    msg3 = await bot.edit_message_text(chat_id=kerakli_royxat[0], text=text3, message_id=msg2.message_id)
-    #time.sleep(1)
-    msg4 = await bot.edit_message_text(chat_id=kerakli_royxat[0], text=text4, message_id=msg3.message_id)
-    #time.sleep(1)
-    msg5 = await bot.edit_message_text(chat_id=kerakli_royxat[0], text=text5, message_id=msg4.message_id)
-    #time.sleep(1)
-    msg6 = await bot.edit_message_text(chat_id=kerakli_royxat[0], text=msg5.message_id, message_id=msg5.message_id)
-    await bot.edit_message_text(chat_id=kerakli_royxat[0], text=kerakli_royxat[5], message_id=msg6.message_id)
+    time.sleep(1)
+    msg2 = await bot.edit_message_text(chat_id=message, text=text2, message_id=msg1.message_id)
+    time.sleep(1)
+    msg3 = await bot.edit_message_text(chat_id=message, text=text3, message_id=msg2.message_id)
+    time.sleep(1)
+    msg4 = await bot.edit_message_text(chat_id=message, text=text4, message_id=msg3.message_id)
+    time.sleep(1)
+    msg5 = await bot.edit_message_text(chat_id=message, text=text5, message_id=msg4.message_id)
+    time.sleep(1)
+    msg6 = await bot.edit_message_text(chat_id=message, text=msg5.message_id, message_id=msg5.message_id)
+    await bot.edit_message_text(chat_id=message, text=kerakli_royxat[5], message_id=msg6.message_id)
     
     servers[server_malumoti[0]]={}
     servers[server_malumoti[0]]['max_player_num']=server_malumoti[1]
@@ -245,4 +249,10 @@ async def cancel(call: types.CallbackQuery):
             break
     await call.answer("Сервер рад килинди", show_alert=True)
     await bot.send_message(chat_id=kerakli_royxat[0], text=f"Сизнинг серверингиз кабул килинмади❌")
+    del kerakli_royxat[-1]
+    del kerakli_royxat[-1]
+    del kerakli_royxat[-1]
+    del kerakli_royxat[-1]
+    del kerakli_royxat[-1]
+    del kerakli_royxat[-1]
 
