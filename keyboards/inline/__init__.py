@@ -1,1 +1,2 @@
-from . import game_boshlash
+from . import get_servers
+from . import creat_server
