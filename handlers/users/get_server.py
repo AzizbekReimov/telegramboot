@@ -4,7 +4,7 @@ from typing import Union
 from loader import dp, bot
 
 from data.config import servers, server_keys
-from keyboards.inline.get_servers import Servers, Server, menu_cd, add_serverr, Cancel_Server
+from keyboards.inline.get_servers import Servers, Server, menu_cd, add_serverr
 from .creat_server import server_menu
 import time
 
@@ -70,26 +70,6 @@ async def add_server(messagee: Union[types.CallbackQuery, types.Message]):
             del add_server_xaqida[-1]
             delete[messagee.from_user.id].append(n2.message_id)
     print(delete)
-@dp.callback_query_handler(add_serverr.filter(item_id="cancel_server"))
-async def cancel_server_button(call: Union[types.CallbackQuery, types.Message]):
-    royxat = {}
-    for server in server_keys:
-        royxat[server]=servers[server]['players']
-    text = ""
-    text1 = ""
-    for key, value in royxat.items():
-        if call.from_user.id in royxat[key]:
-            royxat[key].remove(call.from_user.id)
-            text1 += f"<b>Сиз ({key}) сервер ройхатидан чикдингиз</b>✅\n"
-            await bot.send_message(chat_id=call.from_user.id, text=f"{text1}")
-            while True:
-                try:
-                    print(delete)
-                    await bot.delete_message(chat_id=call.from_user.id, message_id=delete[call.from_user.id][-1])
-                    del delete[call.from_user.id][-1]
-                except IndexError:
-                    print("xato")
-                    break
             
 
 @dp.callback_query_handler(menu_cd.filter())
